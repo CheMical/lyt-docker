@@ -1,5 +1,5 @@
 ## Build container
-FROM ubuntu 
+FROM ubuntu AS builder
 
 RUN apt update && apt install -y git nodejs npm ruby-compass
 RUN npm install -g npx
@@ -10,4 +10,4 @@ RUN cd lyt && npm install && npx cake app
 ## Webserver with LYT2
 FROM nginx:1.15.3-alpine
 
-COPY --from=0 /lyt/build /usr/share/nginx/html/embedded
+COPY --from=builder /lyt/build /usr/share/nginx/html/embedded
